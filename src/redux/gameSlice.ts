@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type GameState = "paused" | "playing";
 
-export type Shape = "square" | "rectangle" | undefined;
+export type Shape = "square" | "rectangle";
 
 // TODO: Add extra shape types
 export type TileShape = {
@@ -10,10 +10,19 @@ export type TileShape = {
   shape: Shape;
 };
 
+export type ShapePiece = {
+  id: string;
+  x: number;
+  y: number;
+  shape: Shape;
+  matched: boolean;
+};
+
 interface GameSliceState {
   gameState: GameState;
   board: TileShape[][];
-  draggingShape: Shape;
+  draggingShape: ShapePiece | undefined;
+  shapePieces: Record<string, ShapePiece>;
 }
 
 // TODO: Comeback and improve random logic
@@ -36,10 +45,28 @@ const generateRandomBoard = (): TileShape[][] => {
   return board;
 };
 
+const generateShapePieces = (): Record<string, ShapePiece> => {
+  let pieces: Record<string, ShapePiece> = {};
+  for (let index = 0; index < 1; index++) {
+    const key = `shape-${index}`;
+    const piece: ShapePiece = {
+      id: key,
+      x: 0,
+      y: 0,
+      shape: "square",
+      matched: false,
+    };
+    pieces[key] = piece;
+  }
+
+  return pieces;
+};
+
 const initialState: GameSliceState = {
   gameState: "paused",
   board: generateRandomBoard(),
   draggingShape: undefined,
+  shapePieces: generateShapePieces(),
 };
 
 const gameSlice = createSlice({
@@ -55,11 +82,23 @@ const gameSlice = createSlice({
     setPlaying: (state) => {
       state.gameState = "playing";
     },
-    setDraggingShape: (state, action: { payload: Shape }) => {
+    setDraggingShape: (state, action: { payload: ShapePiece | undefined }) => {
       state.draggingShape = action.payload;
+    },
+    updateShapePieceState: (state, action: { payload: ShapePiece }) => {
+      const key = action.payload.id;
+      const newShape = action.payload;
+      state.shapePieces[key] = newShape;
+      console.log(state.shapePieces);
     },
   },
 });
 
-export const { togglePaused, setPaused, setPlaying, setDraggingShape } = gameSlice.actions;
+export const {
+  togglePaused,
+  setPaused,
+  setPlaying,
+  setDraggingShape,
+  updateShapePieceState,
+} = gameSlice.actions;
 export default gameSlice.reducer;

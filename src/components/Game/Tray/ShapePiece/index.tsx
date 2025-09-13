@@ -1,18 +1,19 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
-import { setDraggingShape, type Shape } from "../../../../redux/gameSlice";
+import { setDraggingShape, type ShapePiece } from "../../../../redux/gameSlice";
 import { useDispatch } from "react-redux";
 
-const ShapePiece: React.FC = () => {
+const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
+  const { id, x, y, shape, matched } = props;
   const [drag, setDrag] = useState<boolean>(false);
-  const [x, setX] = useState<number>();
-  const [y, setY] = useState<number>();
+  const [componentX, setX] = useState<number>(x);
+  const [componentY, setY] = useState<number>(y);
   const dispatch = useDispatch();
 
   const size = 64;
 
   const handleMouseDown = (event: React.MouseEvent) => {
-    dispatch(setDraggingShape("rectangle"));
+    dispatch(setDraggingShape({ id, x, y, shape, matched }));
     setDrag(true);
     setX(event.clientX - size / 2);
     setY(event.clientY - size / 2);
@@ -37,15 +38,16 @@ const ShapePiece: React.FC = () => {
     <Button
       sx={{
         position: "fixed",
-        top: y,
-        left: x,
+        top: componentY,
+        left: componentX,
         height: size,
         width: size,
         background: "grey",
         pointerEvents: !drag ? "all" : "none",
       }}
       onMouseDown={handleMouseDown}
-    ></Button>
+      disabled={matched}
+    >{matched && "Matched"}</Button>
   );
 };
 

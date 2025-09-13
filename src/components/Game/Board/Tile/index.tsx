@@ -1,6 +1,9 @@
 import { Box } from "@mui/material";
-import type { TileShape } from "../../../../redux/gameSlice";
-import { useSelector } from "react-redux";
+import {
+  updateShapePieceState,
+  type TileShape,
+} from "../../../../redux/gameSlice";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 
 type TileProps = {
@@ -11,14 +14,17 @@ type TileProps = {
 
 const Tile: React.FC<TileProps> = (props: TileProps) => {
   const game = useSelector((state: RootState) => state.game);
+  const dispatch = useDispatch();
 
   const { tile, x, y } = props;
 
   return (
     <Box
       onMouseUp={() => {
-        if (game.draggingShape === tile.shape) {
-          console.log("Match");
+        if (game.draggingShape && game.draggingShape.shape === tile.shape) {
+          dispatch(
+            updateShapePieceState({ ...game.draggingShape, matched: true })
+          );
         } else {
           console.log("WRONG!");
         }
