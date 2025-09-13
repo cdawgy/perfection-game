@@ -4,27 +4,29 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 
 type ClockProps = {
-  gameTimeInSeconds: number;
   size: number;
 };
 
 const Clock: React.FC<ClockProps> = (props: ClockProps) => {
-  const gameState = useSelector((state: RootState) => state.game.gameState);
+  const game = useSelector((state: RootState) => state.game);
 
-  const { gameTimeInSeconds, size } = props;
+  const { size } = props;
 
-  const [timeLeft, setTimeLeft] = useState<number>(gameTimeInSeconds);
+  const [timeLeft, setTimeLeft] = useState<number>(
+    game.difficulty.timeInSeconds
+  );
   const [timerValue, setTimerValue] = useState<number>(100);
 
   useEffect(() => {
-    if (timeLeft <= 0 || gameState === "paused") return;
+    setTimeLeft(game.difficulty.timeInSeconds)
+    if (timeLeft <= 0 || game.gameState === "paused") return;
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
-      setTimerValue((timeLeft / gameTimeInSeconds) * 100);
+      setTimerValue((timeLeft / game.difficulty.timeInSeconds) * 100);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft, gameState, gameTimeInSeconds]);
+  }, [timeLeft, game.gameState, game.difficulty]);
 
   return (
     <Box

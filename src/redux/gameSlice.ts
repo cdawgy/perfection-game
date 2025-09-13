@@ -57,7 +57,6 @@ const allShapes: Shape[] = [
   "kite",
 ];
 
-// TODO: Add extra shape types
 export type TileShape = {
   isOccupied: boolean;
   shape: Shape;
@@ -78,12 +77,45 @@ export type TrayBoundaries = {
   width: number;
 };
 
+export type Difficulties = "easy" | "medium" | "hard";
+
+export type Difficulty = {
+  rowWidth: number;
+  rowCount: number;
+  timeInSeconds: number;
+};
+
+const EASY: Difficulty = {
+  rowCount: 1,
+  rowWidth: 3,
+  timeInSeconds: 30,
+};
+
+const MEDIUM: Difficulty = {
+  rowCount: 3,
+  rowWidth: 4,
+  timeInSeconds: 60,
+};
+
+const HARD: Difficulty = {
+  rowCount: 5,
+  rowWidth: 5,
+  timeInSeconds: 45,
+};
+
+const difficultySettings: Record<Difficulties, Difficulty> = {
+  easy: EASY,
+  medium: MEDIUM,
+  hard: HARD,
+};
+
 interface GameSliceState {
   gameState: GameState;
   board: TileShape[][];
   draggingShape: ShapePiece | undefined;
   shapePieces: Record<string, ShapePiece>;
   trayBoundaries: TrayBoundaries;
+  difficulty: Difficulty;
 }
 
 const ROW_WIDTH = 5;
@@ -137,6 +169,7 @@ const initialState: GameSliceState = {
     height: 0,
     width: 0,
   },
+  difficulty: EASY,
 };
 
 const gameSlice = createSlice({
@@ -163,6 +196,9 @@ const gameSlice = createSlice({
     initialiseTray: (state, action: { payload: TrayBoundaries }) => {
       state.trayBoundaries = action.payload;
     },
+    setGameDifficulty: (state, action: { payload: Difficulties }) => {
+      state.difficulty = difficultySettings[action.payload];
+    },
   },
 });
 
@@ -173,5 +209,6 @@ export const {
   setDraggingShape,
   updateShapePieceState,
   initialiseTray,
+  setGameDifficulty,
 } = gameSlice.actions;
 export default gameSlice.reducer;
