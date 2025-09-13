@@ -1,11 +1,14 @@
-import { DirectionsBoat } from "@mui/icons-material";
-import { Button, Box, Container, Typography } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Box, Container, Grid } from "@mui/material";
+import Header from "./components/Header";
+import Game from "./components/Game";
 
 const App = () => {
-  const navigate = useNavigate();
-
-  return <Container sx={{ mt: 5 }}></Container>;
+  return (
+    <Box sx={{ p: 1 }}>
+      <Header />
+      <Game />
+    </Box>
+  );
 };
 
 export default App;

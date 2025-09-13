@@ -1,15 +1,15 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Join from "./pages/Join";
-import Lobby from "./pages/Create";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" Component={App} />
-      <Route path="/join" Component={Join} />
-      <Route path="/lobby/:roomId" Component={Lobby} />
-    </Routes>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" Component={App} />
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );
