@@ -121,9 +121,12 @@ interface GameSliceState {
 const ROW_WIDTH = 5;
 const ROW_COUNT = 5;
 
-const generateRandomRow = (parentIndex: number): TileShape[] => {
+const generateRandomRow = (
+  parentIndex: number,
+  rowWidth?: number
+): TileShape[] => {
   let tileRow: TileShape[] = [];
-  for (let index = 0; index < ROW_WIDTH; index++) {
+  for (let index = 0; index < (rowWidth || ROW_WIDTH); index++) {
     const rowShapeIndex = parentIndex * ROW_COUNT + index;
     tileRow.push({
       isOccupied: false,
@@ -133,17 +136,27 @@ const generateRandomRow = (parentIndex: number): TileShape[] => {
   return tileRow;
 };
 
-const generateRandomBoard = (): TileShape[][] => {
+const generateRandomBoard = (
+  rowCount?: number,
+  rowWidth?: number
+): TileShape[][] => {
   let board: TileShape[][] = [];
-  for (let index = 0; index < ROW_COUNT; index++) {
-    board.push(generateRandomRow(index));
+  for (let index = 0; index < (rowCount || ROW_COUNT); index++) {
+    board.push(generateRandomRow(index, rowWidth));
   }
   return board;
 };
 
-const generateShapePieces = (): Record<string, ShapePiece> => {
+const generateShapePieces = (
+  rowCount?: number,
+  rowWidth?: number
+): Record<string, ShapePiece> => {
   let pieces: Record<string, ShapePiece> = {};
-  for (let index = 0; index < ROW_COUNT * ROW_WIDTH; index++) {
+  for (
+    let index = 0;
+    index < (rowCount || ROW_COUNT) * (rowWidth || ROW_WIDTH);
+    index++
+  ) {
     const key = `shape-${index}`;
     const piece: ShapePiece = {
       id: key,
@@ -198,6 +211,9 @@ const gameSlice = createSlice({
     },
     setGameDifficulty: (state, action: { payload: Difficulties }) => {
       state.difficulty = difficultySettings[action.payload];
+      const { rowCount, rowWidth } = state.difficulty;
+      state.board = generateRandomBoard(rowCount, rowWidth);
+      state.shapePieces = generateShapePieces(rowCount, rowWidth);
     },
   },
 });

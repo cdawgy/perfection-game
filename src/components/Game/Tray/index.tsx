@@ -1,15 +1,16 @@
 import { Box } from "@mui/material";
-import ShapePiece from "./ShapePiece";
+import ShapePieceComponent from "./ShapePiece";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../redux/store";
-import { useEffect, useRef } from "react";
-import { initialiseTray } from "../../../redux/gameSlice";
+import { useEffect, useRef, useState } from "react";
+import { initialiseTray, type ShapePiece } from "../../../redux/gameSlice";
 
 const Tray: React.FC = () => {
   const game = useSelector((state: RootState) => state.game);
 
   const trayRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const [shapePieces, setShapePieces] = useState<ShapePiece[]>([]);
 
   useEffect(() => {
     if (trayRef.current) {
@@ -18,20 +19,23 @@ const Tray: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setShapePieces(Object.values(game.shapePieces));
+  }, [game.shapePieces]);
+
   return (
     <Box
       ref={trayRef}
       sx={{
         width: "100%",
         height: "100%",
-        borderRadius: 2,
-        border: '1px solid red'
+        border: "1px solid red",
       }}
     >
       {/* Dont render the pieces until the tray has initialised */}
       {trayRef &&
-        Object.values(game.shapePieces).map((shapePiece) => (
-          <ShapePiece
+        shapePieces.map((shapePiece) => (
+          <ShapePieceComponent
             id={shapePiece.id}
             x={shapePiece.x}
             y={shapePiece.y}
