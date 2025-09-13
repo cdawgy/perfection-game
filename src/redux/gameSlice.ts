@@ -18,11 +18,19 @@ export type ShapePiece = {
   matched: boolean;
 };
 
+export type TrayBoundaries = {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
 interface GameSliceState {
   gameState: GameState;
   board: TileShape[][];
   draggingShape: ShapePiece | undefined;
   shapePieces: Record<string, ShapePiece>;
+  trayBoundaries: TrayBoundaries;
 }
 
 // TODO: Comeback and improve random logic
@@ -47,7 +55,7 @@ const generateRandomBoard = (): TileShape[][] => {
 
 const generateShapePieces = (): Record<string, ShapePiece> => {
   let pieces: Record<string, ShapePiece> = {};
-  for (let index = 0; index < 1; index++) {
+  for (let index = 0; index < 25; index++) {
     const key = `shape-${index}`;
     const piece: ShapePiece = {
       id: key,
@@ -67,6 +75,12 @@ const initialState: GameSliceState = {
   board: generateRandomBoard(),
   draggingShape: undefined,
   shapePieces: generateShapePieces(),
+  trayBoundaries: {
+    y: 0,
+    x: 0,
+    height: 0,
+    width: 0,
+  },
 };
 
 const gameSlice = createSlice({
@@ -89,7 +103,9 @@ const gameSlice = createSlice({
       const key = action.payload.id;
       const newShape = action.payload;
       state.shapePieces[key] = newShape;
-      console.log(state.shapePieces);
+    },
+    initialiseTray: (state, action: { payload: TrayBoundaries }) => {
+      state.trayBoundaries = action.payload;
     },
   },
 });
@@ -100,5 +116,6 @@ export const {
   setPlaying,
   setDraggingShape,
   updateShapePieceState,
+  initialiseTray,
 } = gameSlice.actions;
 export default gameSlice.reducer;

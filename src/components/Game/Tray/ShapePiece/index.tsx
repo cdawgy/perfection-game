@@ -1,10 +1,14 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { setDraggingShape, type ShapePiece } from "../../../../redux/gameSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
 
 const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
+  const game = useSelector((state: RootState) => state.game);
+
   const { id, x, y, shape, matched } = props;
+
   const [drag, setDrag] = useState<boolean>(false);
   const [componentX, setX] = useState<number>(x);
   const [componentY, setY] = useState<number>(y);
@@ -34,10 +38,21 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
+  function getRandomInt(min: number, max: number): number {
+    // Returns an integer between min and max (inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  useEffect(() => {
+    const { x, y, height, width } = game.trayBoundaries;
+    setX(x + getRandomInt(0, width - size));
+    setY(y + getRandomInt(0, height - size));
+  }, [game.trayBoundaries]);
+
   return (
     <Button
       sx={{
-        position: "fixed",
+        position: "absolute",
         top: componentY,
         left: componentX,
         height: size,
@@ -47,7 +62,9 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
       }}
       onMouseDown={handleMouseDown}
       disabled={matched}
-    >{matched && "Matched"}</Button>
+    >
+      {matched && "Matched"}
+    </Button>
   );
 };
 
