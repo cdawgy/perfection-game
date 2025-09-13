@@ -39,7 +39,6 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
   };
 
   function getRandomInt(min: number, max: number): number {
-    // Returns an integer between min and max (inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
@@ -63,7 +62,7 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
       onMouseDown={handleMouseDown}
       disabled={matched}
     >
-      {matched && "Matched"}
+      {matched ? "Matched" : shape}
     </Button>
   );
 };

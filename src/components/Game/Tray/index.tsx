@@ -29,15 +29,16 @@ const Tray: React.FC = () => {
       }}
     >
       {/* Dont render the pieces until the tray has initialised */}
-      {trayRef && Object.values(game.shapePieces).map((shapePiece) => (
-        <ShapePiece
-          id={shapePiece.id}
-          x={shapePiece.x}
-          y={shapePiece.y}
-          shape={shapePiece.shape}
-          matched={shapePiece.matched}
-        />
-      ))}
+      {trayRef &&
+        Object.values(game.shapePieces).map((shapePiece) => (
+          <ShapePiece
+            id={shapePiece.id}
+            x={shapePiece.x}
+            y={shapePiece.y}
+            shape={shapePiece.shape}
+            matched={shapePiece.matched}
+          />
+        ))}
     </Box>
   );
 };

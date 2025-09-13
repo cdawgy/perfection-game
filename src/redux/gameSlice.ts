@@ -2,7 +2,60 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type GameState = "paused" | "playing";
 
-export type Shape = "square" | "rectangle";
+export type Shape =
+  | "square"
+  | "rectangle"
+  | "triangle"
+  | "circle"
+  | "pentagon"
+  | "hexagon"
+  | "heptagon"
+  | "octagon"
+  | "nonagon"
+  | "decagon"
+  | "star"
+  | "diamond"
+  | "heart"
+  | "arrow"
+  | "cross"
+  | "moon"
+  | "sun"
+  | "cloud"
+  | "leaf"
+  | "teardrop"
+  | "crescent"
+  | "ellipse"
+  | "parallelogram"
+  | "trapezoid"
+  | "kite";
+
+const allShapes: Shape[] = [
+  "square",
+  "rectangle",
+  "triangle",
+  "circle",
+  "pentagon",
+  "hexagon",
+  "heptagon",
+  "octagon",
+  "nonagon",
+  "decagon",
+  "star",
+  "diamond",
+  "heart",
+  "arrow",
+  "cross",
+  "moon",
+  "sun",
+  "cloud",
+  "leaf",
+  "teardrop",
+  "crescent",
+  "ellipse",
+  "parallelogram",
+  "trapezoid",
+  "kite",
+];
 
 // TODO: Add extra shape types
 export type TileShape = {
@@ -33,13 +86,16 @@ interface GameSliceState {
   trayBoundaries: TrayBoundaries;
 }
 
-// TODO: Comeback and improve random logic
-const generateRandomRow = (): TileShape[] => {
+const ROW_WIDTH = 5;
+const ROW_COUNT = 5;
+
+const generateRandomRow = (parentIndex: number): TileShape[] => {
   let tileRow: TileShape[] = [];
-  for (let index = 0; index < 5; index++) {
+  for (let index = 0; index < ROW_WIDTH; index++) {
+    const rowShapeIndex = parentIndex * ROW_COUNT + index;
     tileRow.push({
       isOccupied: false,
-      shape: index % 2 == 0 ? "rectangle" : "square",
+      shape: allShapes[rowShapeIndex],
     });
   }
   return tileRow;
@@ -47,21 +103,21 @@ const generateRandomRow = (): TileShape[] => {
 
 const generateRandomBoard = (): TileShape[][] => {
   let board: TileShape[][] = [];
-  for (let index = 0; index < 5; index++) {
-    board.push(generateRandomRow());
+  for (let index = 0; index < ROW_COUNT; index++) {
+    board.push(generateRandomRow(index));
   }
   return board;
 };
 
 const generateShapePieces = (): Record<string, ShapePiece> => {
   let pieces: Record<string, ShapePiece> = {};
-  for (let index = 0; index < 25; index++) {
+  for (let index = 0; index < ROW_COUNT * ROW_WIDTH; index++) {
     const key = `shape-${index}`;
     const piece: ShapePiece = {
       id: key,
       x: 0,
       y: 0,
-      shape: "square",
+      shape: allShapes[index],
       matched: false,
     };
     pieces[key] = piece;
