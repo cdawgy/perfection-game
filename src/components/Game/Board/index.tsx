@@ -8,13 +8,13 @@ const Board: React.FC = () => {
 
   return (
     <Box>
-      {game.board.map((tileRow, x) => {
+      {game.board.map((tileRow) => {
         return (
           <Grid container>
-            {tileRow.map((tile, y) => {
+            {tileRow.map((tile) => {
               return (
                 <Grid>
-                  <Tile tile={tile} x={x} y={y} />
+                  <Tile tile={tile} />
                 </Grid>
               );
             })}

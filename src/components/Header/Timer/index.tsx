@@ -67,7 +67,7 @@ const Timer: React.FC = () => {
       <Button onClick={() => dispatch(togglePaused())} variant="contained">
         {game.gameState === "paused" ? "Play" : "Pause"}
       </Button>
-      <Typography>{Object.values(game.shapePieces).filter(shapePiece => shapePiece.matched).length}/25 Pieces matched</Typography>
+      <Typography>{Object.values(game.shapePieces).filter(shapePiece => shapePiece.matched).length}/{Object.values(game.shapePieces).length} Pieces matched</Typography>
     </Box>
   );
 };

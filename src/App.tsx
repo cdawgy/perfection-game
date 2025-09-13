@@ -4,10 +4,10 @@ import Game from "./components/Game";
 
 const App = () => {
   return (
-    <Box sx={{ p: 1 }}>
+    <Container>
       <Header />
       <Game />
-    </Box>
+    </Container>
   );
 };
 

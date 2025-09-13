@@ -5,18 +5,17 @@ import {
 } from "../../../../redux/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
+import { determinePieceIcon } from "../../Tray/ShapePiece/shapePieceUtils";
 
 type TileProps = {
   tile: TileShape;
-  x: number;
-  y: number;
 };
 
 const Tile: React.FC<TileProps> = (props: TileProps) => {
   const game = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
-  const { tile, x, y } = props;
+  const { tile } = props;
 
   return (
     <Box
@@ -33,14 +32,14 @@ const Tile: React.FC<TileProps> = (props: TileProps) => {
       sx={{
         height: 128,
         width: 128,
-        background: "red",
         border: "1px solid green",
         zIndex: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <p>{`Occupied: ${tile.isOccupied}`}</p>
-      <p>{`Shape: ${tile.shape}`}</p>
-      <p>{`${x}, ${y}`}</p>
+      {determinePieceIcon(tile.shape)}
     </Box>
   );
 };

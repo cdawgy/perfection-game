@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { setDraggingShape, type ShapePiece } from "../../../../redux/gameSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
+import { determinePieceIcon, getRandomInt } from "./shapePieceUtils";
 
 const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
   const game = useSelector((state: RootState) => state.game);
@@ -38,10 +39,6 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
-  function getRandomInt(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   useEffect(() => {
     const { x, y, height, width } = game.trayBoundaries;
     setX(x + getRandomInt(0, width - size));
@@ -56,12 +53,12 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
         left: componentX,
         height: size,
         width: size,
-        background: "grey",
         pointerEvents: !drag ? "all" : "none",
       }}
       onMouseDown={handleMouseDown}
       disabled={matched}
     >
+      {determinePieceIcon(shape)}
       {matched ? "Matched" : shape}
     </Button>
   );

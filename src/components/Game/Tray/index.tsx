@@ -22,10 +22,10 @@ const Tray: React.FC = () => {
     <Box
       ref={trayRef}
       sx={{
-        background: "blue",
         width: "100%",
         height: "100%",
         borderRadius: 2,
+        border: '1px solid red'
       }}
     >
       {/* Dont render the pieces until the tray has initialised */}
