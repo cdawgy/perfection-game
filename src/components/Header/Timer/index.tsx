@@ -4,6 +4,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from "@mui/material";
 import Clock from "./Clock";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ import { togglePaused } from "../../../redux/gameSlice";
 type Difficulties = "easy" | "medium" | "hard";
 
 const Timer: React.FC = () => {
-  const gameState = useSelector((state: RootState) => state.game.gameState);
+  const game = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch<AppDispatch>();
   const [difficulty, setDifficulty] = useState<Difficulties>("easy");
   const [gameTimeInSeconds, setGameTimeInSeconds] = useState<number>(120);
@@ -64,8 +65,9 @@ const Timer: React.FC = () => {
         />
       </RadioGroup>
       <Button onClick={() => dispatch(togglePaused())} variant="contained">
-        {gameState === "paused" ? "Play" : "Pause"}
+        {game.gameState === "paused" ? "Play" : "Pause"}
       </Button>
+      <Typography>{Object.values(game.shapePieces).filter(shapePiece => shapePiece.matched).length}/25 Pieces matched</Typography>
     </Box>
   );
 };

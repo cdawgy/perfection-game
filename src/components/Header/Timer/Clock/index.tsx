@@ -10,7 +10,7 @@ type ClockProps = {
 
 const Clock: React.FC<ClockProps> = (props: ClockProps) => {
   const gameState = useSelector((state: RootState) => state.game.gameState);
-  
+
   const { gameTimeInSeconds, size } = props;
 
   const [timeLeft, setTimeLeft] = useState<number>(gameTimeInSeconds);
@@ -20,11 +20,11 @@ const Clock: React.FC<ClockProps> = (props: ClockProps) => {
     if (timeLeft <= 0 || gameState === "paused") return;
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
-      setTimerValue(timeLeft/gameTimeInSeconds*100)
+      setTimerValue((timeLeft / gameTimeInSeconds) * 100);
     }, 1000);
 
-    return () => clearInterval(interval); // cleanup
-  }, [timeLeft, gameState]);
+    return () => clearInterval(interval);
+  }, [timeLeft, gameState, gameTimeInSeconds]);
 
   return (
     <Box
