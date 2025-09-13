@@ -5,14 +5,14 @@ import Board from "./Board";
 const Game: React.FC = () => {
   return (
     <Grid container>
-      <Grid size={2}>
+      <Grid size={4}>
         <Tray />
       </Grid>
-      <Grid size={8}>
+      <Grid
+        size={8}
+        sx={{ justifyContent: "center", margin: "auto", display: "flex" }}
+      >
         <Board />
-      </Grid>
-      <Grid size={2}>
-        <Tray />
       </Grid>
     </Grid>
   );
