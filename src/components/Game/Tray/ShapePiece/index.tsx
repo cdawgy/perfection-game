@@ -43,6 +43,7 @@ const ShapePiece: React.FC<ShapePiece> = (props: ShapePiece) => {
     const { x, y, height, width } = game.trayBoundaries;
     setX(x + getRandomInt(0, width - size));
     setY(y + getRandomInt(0, height - size));
+    console.log(height)
   }, [game.trayBoundaries]);
 
   return (

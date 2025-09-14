@@ -116,6 +116,7 @@ interface GameSliceState {
   shapePieces: Record<string, ShapePiece>;
   trayBoundaries: TrayBoundaries;
   difficulty: Difficulty;
+  timeLeft: number;
 }
 
 const ROW_WIDTH = 5;
@@ -183,6 +184,7 @@ const initialState: GameSliceState = {
     width: 0,
   },
   difficulty: EASY,
+  timeLeft: EASY.timeInSeconds,
 };
 
 const gameSlice = createSlice({
@@ -214,6 +216,7 @@ const gameSlice = createSlice({
       const { rowCount, rowWidth } = state.difficulty;
       state.board = generateRandomBoard(rowCount, rowWidth);
       state.shapePieces = generateShapePieces(rowCount, rowWidth);
+      state.timeLeft = state.difficulty.timeInSeconds;
     },
   },
 });

@@ -18,12 +18,20 @@ const Clock: React.FC<ClockProps> = (props: ClockProps) => {
   const [timerValue, setTimerValue] = useState<number>(100);
 
   useEffect(() => {
-    setTimeLeft(game.difficulty.timeInSeconds)
+    // setTimeLeft(game.difficulty.timeInSeconds);
     if (timeLeft <= 0 || game.gameState === "paused") return;
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
       setTimerValue((timeLeft / game.difficulty.timeInSeconds) * 100);
     }, 1000);
+
+    if (
+      Object.values(game.shapePieces).filter((shapePiece) => shapePiece.matched)
+        .length === Object.values(game.shapePieces).length &&
+      timeLeft > 0
+    ) {
+      clearInterval(interval);
+    }
 
     return () => clearInterval(interval);
   }, [timeLeft, game.gameState, game.difficulty]);

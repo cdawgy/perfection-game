@@ -29,7 +29,6 @@ const Tray: React.FC = () => {
       sx={{
         width: "100%",
         height: "100%",
-        border: "1px solid red",
       }}
     >
       {/* Dont render the pieces until the tray has initialised */}
